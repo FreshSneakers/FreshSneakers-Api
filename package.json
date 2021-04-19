@@ -1,0 +1,38 @@
+{
+  "name": "FreshSneakers-Api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "bin": {
+    "FreshSneakers-Api": "seeds.js"
+  },
+  "scripts": {
+    "start": "node ./app.js",
+    "dev": " nodemon ./app.js",
+    "seeds": "node ./bin/seeds.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreshSneakers/FreshSneakers-Api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FreshSneakers/FreshSneakers-Api/issues"
+  },
+  "homepage": "https://github.com/FreshSneakers/FreshSneakers-Api#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "debug": "^4.3.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "faker": "^5.5.3",
+    "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.5",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.7"
+  }
+}
