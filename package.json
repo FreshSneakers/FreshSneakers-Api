@@ -1,7 +1,7 @@
 {
-  "name": "FreshSneakers-Api",
+  "name": "fresh-sneakers-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "fresh-sneakers-api",
   "main": "app.js",
   "bin": {
     "FreshSneakers-Api": "seeds.js"
