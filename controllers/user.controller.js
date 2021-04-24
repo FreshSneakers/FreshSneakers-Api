@@ -1,6 +1,7 @@
 const createError = require("http-errors");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
+const { sendActivationEmail } = require('../config/mailer.config');
 
 module.exports.getUser = (req, res, next) => {
   User.find({})
@@ -14,7 +15,10 @@ module.exports.signup = (req, res, next) => {
         next(createError(400, { errors: { email: 'This email is already in use' } }))
       } else {
         return User.create(req.body)
-          .then(user => res.status(201).json(user))
+          .then((user) => {
+            sendActivationEmail(user.email, user.activationToken)
+            res.status(201).json(user)
+          })
       }
     })
     .catch(next)
@@ -26,12 +30,12 @@ module.exports.login = (req, res, next) => {
   User.findOne({ email })
     .then(user => {
       if (!user) {
-        next(createError(404, { errors: { email: 'Email or password incorrect' } }))
+        next(createError(404, { errors: { email: 'Email or password is incorrect' } }))
       } else {
         return user.checkPassword(password)
           .then(match => {
             if (!match) {
-              next(createError(404, { errors: { email: 'Email or password incorrect' } }))
+              next(createError(404, { errors: { email: 'Email or password is incorrect' } }))
             } else {
               res.json({
                 access_token: jwt.sign(
@@ -57,4 +61,15 @@ module.exports.get = (req, res, next) => {
         res.json(user)
       }
     })
+}
+
+module.exports.activate = (req, res, next) => {
+  User.findOneAndUpdate(
+    { activationToken: req.params.token, active: false },
+    { active: true, activationToken: 'active' }
+  )
+    .then((u) => {
+      res.status(201).json(u)
+    })
+    .catch((e) => next(e));
 }

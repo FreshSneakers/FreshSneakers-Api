@@ -46,6 +46,22 @@ const userSchema = mongoose.Schema(
       enum: ["ADMIN", "USER"],
       default: "USER",
     },
+    active: {
+      type: Boolean,
+      default: false
+    },
+    activationToken: {
+      type: String,
+      unique: true,
+      default: () => {
+        return (
+          Math.random().toString(36).substring(2, 15) +
+          Math.random().toString(36).substring(2, 15) +
+          Math.random().toString(36).substring(2, 15) +
+          Math.random().toString(36).substring(2, 15)
+        );
+      }
+    },
   },
   {
     timestamps: true,
