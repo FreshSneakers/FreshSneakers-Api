@@ -110,3 +110,5 @@ const sneakers= [
 
     },
 ]
+
+module.exports = sneakers
