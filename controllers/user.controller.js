@@ -37,15 +37,19 @@ module.exports.login = (req, res, next) => {
             if (!match) {
               next(createError(404, { errors: { email: 'Email or password is incorrect' } }))
             } else {
-              res.json({
-                access_token: jwt.sign(
-                  { id: user._id },
-                  process.env.JWT_SECRET,
-                  {
-                    expiresIn: '1d'
-                  }
-                )
-              })
+              if (!user.active) {
+                next(createError(404, { errors: { email: 'Your account is not activated' } }))
+              } else {
+                res.json({
+                  access_token: jwt.sign(
+                    { id: user._id },
+                    process.env.JWT_SECRET,
+                    {
+                      expiresIn: '1d'
+                    }
+                  )
+                })
+              }
             }
           })
       }
