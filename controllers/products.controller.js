@@ -3,7 +3,6 @@ const Products = require('../models/Products.model')
 
 
 module.exports.get = (req,res,next) => {
-    console.log('hfhfh')
     Products.find({})
     .then(product => {
         if(!product){
@@ -13,4 +12,18 @@ module.exports.get = (req,res,next) => {
         }
     })
     .catch(next)
+}
+
+module.exports.filterProducts = (req,res,next) => {
+    const sneakers = {}
+    const {search} = req.query
+
+    if(search){
+        sneakers.brand = new RegExp(search,'i')
+    }
+
+    Products.find(criteria)
+    .then(products => res.json(products))
+    .catch(next)
+
 }
