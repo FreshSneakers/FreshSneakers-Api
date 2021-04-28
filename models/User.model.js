@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const PASSWORD_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const SALT_WORK_FACTOR = 10;
+const ProductsDeal = require('./Product-deal')
 
 const userSchema = mongoose.Schema(
   {
@@ -88,10 +89,16 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
-//Comparamos los dos passwords
+
 userSchema.methods.checkPassword = function (passwordToCheck) {
   return bcrypt.compare(passwordToCheck, this.password);
 };
+
+userSchema.virtual('ProductsDeal', {
+  ref: ProductsDeal.modelName,
+  localField: '_id',
+  foreignField: 'user'
+})
 
 const User = mongoose.model("User", userSchema);
 

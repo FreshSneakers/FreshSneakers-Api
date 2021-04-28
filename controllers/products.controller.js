@@ -1,29 +1,39 @@
 const createError = require('http-errors')
 const Products = require('../models/Products.model')
 
-
-module.exports.get = (req,res,next) => {
+module.exports.getBuy = (req, res, next) => {
     Products.find({})
-    .then(product => {
-        if(!product){
-            next(createError(404,'Product no found'))
-        }else {
-            res.json(product)
-        }
-    })
-    .catch(next)
+        .then(product => {
+            if (!product) {
+                next(createError(404, 'Product no found'))
+            } else {
+                res.status(201).json(product)
+            }
+        })
+        .catch(next)
 }
 
-module.exports.filterProducts = (req,res,next) => {
-    const sneakers = {}
-    const {search} = req.query
+module.exports.selectProduct = (req, res, next) => {
+    const { model } = req.query
 
-    if(search){
-        sneakers.brand = new RegExp(search,'i')
-    }
+    Products.find({
+        model: {
+            $regex: (model),
+            $options: 'i'
+        }
+    })
+        .then((products) => {
+            res.status(201).json(products)
+        })
+        .catch(next)
+}
 
-    Products.find(criteria)
-    .then(products => res.json(products))
-    .catch(next)
+module.exports.sellDetail = (req, res, next) => {
+    const {id} = req.params
 
+    Products.findById(id)
+        .then((product) => {
+            res.status(201).json(product)
+        })
+        .catch(next)
 }

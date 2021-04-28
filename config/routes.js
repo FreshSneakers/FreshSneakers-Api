@@ -12,7 +12,8 @@ router.post('/signup', UsersController.signup)
 router.post('/login', UsersController.login)
 
 //Products routes
-router.get('/buy',ProductsController.get)
-router.get('/sell',ProductsController.filterProducts)
+router.get('/buy', ProductsController.getBuy)
+router.get('/sell', ProductsController.selectProduct)
+router.get('/sneaker/:id', ProductsController.sellDetail)
 
 module.exports = router
