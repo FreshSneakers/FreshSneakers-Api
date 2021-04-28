@@ -1,5 +1,6 @@
 const createError = require('http-errors')
 const Products = require('../models/Products.model')
+const ProductsDeal = require('../models/Product-deal') 
 
 module.exports.getBuy = (req, res, next) => {
     Products.find({})
@@ -13,7 +14,7 @@ module.exports.getBuy = (req, res, next) => {
         .catch(next)
 }
 
-module.exports.selectProduct = (req, res, next) => {
+module.exports.filterProduct = (req, res, next) => {
     const { model } = req.query
 
     Products.find({
@@ -29,11 +30,20 @@ module.exports.selectProduct = (req, res, next) => {
 }
 
 module.exports.sellDetail = (req, res, next) => {
-    const {id} = req.params
+    const { id } = req.params
 
     Products.findById(id)
         .then((product) => {
             res.status(201).json(product)
+        })
+        .catch(next)
+}
+
+module.exports.sellProduct = (req, res, next) => {
+
+    ProductsDeal.create(req.body)
+        .then((productDeal) => {
+            res.status(201).json(productDeal)
         })
         .catch(next)
 }

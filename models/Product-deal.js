@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 require('./User.model')
+const CARD_PATTERN = /^3[47][0 - 9]{ 13}$/
 
 const productsDeal = mongoose.Schema({
     brand: {
@@ -35,16 +36,29 @@ const productsDeal = mongoose.Schema({
     color: {
         type: String,
     },
-    size:{
+    size: {
         type: Number,
         require: 'Size is required'
     },
-    user:{
+    card: {
+        type: Number,
+        require: 'Card is required'
+    },
+    status:{
+        type: Boolean,
+        default: true
+    },
+    user: {
         type: mongoose.Types.ObjectId,
         required: 'A user needs to be referenced',
         ref: 'User'
+    },
+},
+    {
+        timestamps: true,
     }
-})
+
+)
 
 const ProductsDeal = mongoose.model("ProductsDeal", productsDeal)
 

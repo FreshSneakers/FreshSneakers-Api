@@ -13,7 +13,8 @@ router.post('/login', UsersController.login)
 
 //Products routes
 router.get('/buy', ProductsController.getBuy)
-router.get('/sell', ProductsController.selectProduct)
+router.get('/sell', ProductsController.filterProduct)
+router.post('/sell/product', ProductsController.sellProduct)
 router.get('/sneaker/:id', ProductsController.sellDetail)
 
 module.exports = router
