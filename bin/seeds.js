@@ -22,6 +22,7 @@ mongoose.connection.once("open", () => {
           addres: "Matadero 112",
           image: faker.internet.avatar(),
           role: "USER",
+          active: true
         });
       }
       return User.create(users);

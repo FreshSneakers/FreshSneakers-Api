@@ -1,21 +1,20 @@
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema(
-  {
+const productSchema = mongoose.Schema({
     brand: {
       type: String,
-      require: "Name is required",
+      require: "Brand is required",
     },
     model: {
       type: String,
-      require: "Email is required",
+      require: "Model is required",
     },
     description: {
       type: String,
     },
     price: {
       type: Number,
-      require: "Address is required",
+      require: "Price is required",
     },
     image: {
       type: String,
@@ -32,15 +31,11 @@ const userSchema = mongoose.Schema(
         message: () => "Invalid image URL",
       },
     },
-    size: {
-      type: Number,
-      require: "Address is required",
-    },
     color: {
       type: String,
     },
   })
 
-const Products = mongoose.model("Products", userSchema);
+const Products = mongoose.model("Products", productSchema);
 
 module.exports = Products;
