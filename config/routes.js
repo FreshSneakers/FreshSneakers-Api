@@ -15,4 +15,9 @@ router.post('/login', UsersController.login)
 router.get('/buy',ProductsController.get)
 router.get('/sell',ProductsController.filterProducts)
 
+//Contact US
+
+router.post('/contact',UsersController.doContact)
+
+
 module.exports = router

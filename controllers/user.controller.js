@@ -1,79 +1,102 @@
 const createError = require("http-errors");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
-const { sendActivationEmail } = require('../config/mailer.config');
+const { sendActivationEmail } = require("../config/mailer.config");
+const Contact = require("../models/ContactUs");
 
 module.exports.getUser = (req, res, next) => {
-  User.find({})
-    .then(users => res.json(users))
+  User.find({}).then((users) => res.json(users));
 };
 
 module.exports.signup = (req, res, next) => {
   User.findOne({ email: req.body.email })
-    .then(user => {
+    .then((user) => {
       if (user) {
-        next(createError(400, { errors: { email: 'This email is already in use' } }))
-      } else {
-        return User.create(req.body)
-          .then((user) => {
-            sendActivationEmail(user.email, user.activationToken)
-            res.status(201).json(user)
+        next(
+          createError(400, {
+            errors: { email: "This email is already in use" },
           })
+        );
+      } else {
+        return User.create(req.body).then((user) => {
+          sendActivationEmail(user.email, user.activationToken);
+          res.status(201).json(user);
+        });
       }
     })
-    .catch(next)
-}
+    .catch(next);
+};
 
 module.exports.login = (req, res, next) => {
-  const { email, password } = req.body
+  const { email, password } = req.body;
 
-  User.findOne({ email })
-    .then(user => {
-      if (!user) {
-        next(createError(404, { errors: { email: 'Email or password is incorrect' } }))
-      } else {
-        return user.checkPassword(password)
-          .then(match => {
-            if (!match) {
-              next(createError(404, { errors: { email: 'Email or password is incorrect' } }))
-            } else {
-              if (!user.active) {
-                next(createError(404, { errors: { email: 'Your account is not activated' } }))
-              } else {
-                res.json({
-                  access_token: jwt.sign(
-                    { id: user._id },
-                    process.env.JWT_SECRET,
-                    {
-                      expiresIn: '1d'
-                    }
-                  )
-                })
-              }
-            }
-          })
-      }
-    })
-}
+  User.findOne({ email }).then((user) => {
+    if (!user) {
+      next(
+        createError(404, {
+          errors: { email: "Email or password is incorrect" },
+        })
+      );
+    } else {
+      return user.checkPassword(password).then((match) => {
+        if (!match) {
+          next(
+            createError(404, {
+              errors: { email: "Email or password is incorrect" },
+            })
+          );
+        } else {
+          if (!user.active) {
+            next(
+              createError(404, {
+                errors: { email: "Your account is not activated" },
+              })
+            );
+          } else {
+            res.json({
+              access_token: jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+                expiresIn: "1d",
+              }),
+            });
+          }
+        }
+      });
+    }
+  });
+};
 
 module.exports.get = (req, res, next) => {
-  User.findById(req.currentUser)
-    .then(user => {
-      if (!user) {
-        next(createError(404))
-      } else {
-        res.json(user)
-      }
-    })
-}
+  User.findById(req.currentUser).then((user) => {
+    if (!user) {
+      next(createError(404));
+    } else {
+      res.json(user);
+    }
+  });
+};
 
 module.exports.activate = (req, res, next) => {
   User.findOneAndUpdate(
     { activationToken: req.params.token, active: false },
-    { active: true, activationToken: 'active' }
+    { active: true, activationToken: "active" }
   )
     .then((u) => {
-      res.status(201).json(u)
+      res.status(201).json(u);
     })
     .catch((e) => next(e));
-}
+};
+
+
+module.exports.doContact = (req, res, next) => {
+  const { name, email, message } = req.body;
+  console.log(name,email,message)
+  Contact.create(req.body)
+    .then((r) => {
+      console.log(r)
+     res.status(201).json(r)
+    })
+    .catch((e) => {
+      console.log(e);
+      next(e);
+    });
+};
