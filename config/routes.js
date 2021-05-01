@@ -18,8 +18,12 @@ router.post('/sell/product', ProductsController.sellProduct)
 router.get('/sneaker/:id', ProductsController.sellDetail)
 
 //Contact US
-
 router.post('/contact',UsersController.doContact)
+
+
+//Profile
+router.post('/profile', authMiddleware.isAuthenticated, UsersController.doEditProfile)
+
 
 
 module.exports = router
