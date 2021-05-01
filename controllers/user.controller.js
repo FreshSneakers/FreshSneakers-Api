@@ -2,7 +2,7 @@ const createError = require("http-errors");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 const { sendActivationEmail } = require("../config/mailer.config");
-const Contact = require("../models/ContactUs");
+
 
 module.exports.getUser = (req, res, next) => {
   User.find({}).then((users) => res.json(users));
@@ -86,17 +86,31 @@ module.exports.activate = (req, res, next) => {
     .catch((e) => next(e));
 };
 
-
 module.exports.doContact = (req, res, next) => {
   const { name, email, message } = req.body;
-  console.log(name,email,message)
+  console.log(name, email, message);
   Contact.create(req.body)
     .then((r) => {
-      console.log(r)
-     res.status(201).json(r)
+      console.log(r);
+      res.status(201).json(r);
     })
     .catch((e) => {
       console.log(e);
       next(e);
     });
+};
+
+module.exports.doEditProfile = (req, res, next) => {
+  User.findByIdAndUpdate(req.currentUser, req.body, {
+    safe: true,
+    upsert: true,
+    new: true,
+  }).then((user) => {
+    console.log(user)
+    if (!user) {
+      next(createError(404, "User nor found"));
+    } else {
+      res.json(user);
+    }
+  });
 };
