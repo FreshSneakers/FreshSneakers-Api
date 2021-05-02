@@ -86,20 +86,6 @@ module.exports.activate = (req, res, next) => {
     .catch((e) => next(e));
 };
 
-module.exports.doContact = (req, res, next) => {
-  const { name, email, message } = req.body;
-  console.log(name, email, message);
-  Contact.create(req.body)
-    .then((r) => {
-      console.log(r);
-      res.status(201).json(r);
-    })
-    .catch((e) => {
-      console.log(e);
-      next(e);
-    });
-};
-
 module.exports.doEditProfile = (req, res, next) => {
   User.findByIdAndUpdate(req.currentUser, req.body, {
     safe: true,

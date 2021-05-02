@@ -42,7 +42,7 @@ const productsDeal = mongoose.Schema({
     },
     card: {
         type: Number,
-        require: 'Card is required'
+        default: 4242424242424242
     },
     status:{
         type: Boolean,

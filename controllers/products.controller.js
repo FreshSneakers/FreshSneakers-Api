@@ -14,6 +14,16 @@ module.exports.getBuy = (req, res, next) => {
         .catch(next)
 }
 
+module.exports.buyDetail = (req, res, next) => {
+    const { id } = req.params
+
+    Products.findById(id)
+        .then((product) => {
+            res.status(201).json(product)
+        })
+        .catch(next)
+}
+
 module.exports.filterProduct = (req, res, next) => {
     const { model } = req.query
 
@@ -40,7 +50,7 @@ module.exports.sellDetail = (req, res, next) => {
 }
 
 module.exports.sellProduct = (req, res, next) => {
-
+    console.log('back', req.body)
     ProductsDeal.create(req.body)
         .then((productDeal) => {
             res.status(201).json(productDeal)
