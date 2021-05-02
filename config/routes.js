@@ -3,6 +3,7 @@ const router = express.Router();
 const UsersController = require('../controllers/User.controller')
 const authMiddleware = require('../middlewares/auth.middleware')
 const ProductsController = require('../controllers/products.controller')
+const ContactController = require('../controllers/contact.controller')
 
 //User routes
 router.get('/users', UsersController.getUser)
@@ -13,12 +14,13 @@ router.post('/login', UsersController.login)
 
 //Products routes
 router.get('/buy', ProductsController.getBuy)
+router.get('/sneaker-buy/:id', ProductsController.buyDetail)
 router.get('/sell', ProductsController.filterProduct)
-router.post('/sell/product', ProductsController.sellProduct)
-router.get('/sneaker/:id', ProductsController.sellDetail)
+router.post('/sell/sneaker', ProductsController.sellProduct)
+router.get('/sneaker-sell/:id', ProductsController.sellDetail)
 
 //Contact US
-router.post('/contact',UsersController.doContact)
+router.post('/contact', ContactController.doContact)
 
 
 //Profile
