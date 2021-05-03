@@ -1,7 +1,7 @@
 const createError = require('http-errors')
 const Products = require('../models/Products.model')
 const ProductsDeal = require('../models/Product-deal')
-const stripe = require('stripe')('sk_test_51ImlDcCK7DlXsOWSDBFH6OErdh6krTLU9uz88EKJFT0EEwgqoCNcxZgyE18sWwsfU5XdzjbwIipcThpyprjHvgY400fAMPnfFZ')
+const stripe = require('stripe')(process.env.KEY_SECRET)
 
 module.exports.getBuy = (req, res, next) => {
     Products.find({})
