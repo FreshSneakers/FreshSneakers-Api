@@ -1,6 +1,7 @@
 const createError = require('http-errors')
 const Products = require('../models/Products.model')
-const ProductsDeal = require('../models/Product-deal') 
+const ProductsDeal = require('../models/Product-deal')
+const stripe = require('stripe')('sk_test_51ImlDcCK7DlXsOWSDBFH6OErdh6krTLU9uz88EKJFT0EEwgqoCNcxZgyE18sWwsfU5XdzjbwIipcThpyprjHvgY400fAMPnfFZ')
 
 module.exports.getBuy = (req, res, next) => {
     Products.find({})
@@ -50,10 +51,52 @@ module.exports.sellDetail = (req, res, next) => {
 }
 
 module.exports.sellProduct = (req, res, next) => {
-    console.log('back', req.body)
-    ProductsDeal.create(req.body)
+
+    const { brand, model, description, price, image, color, size, user, _id } = req.body
+
+    ProductsDeal.create({
+        brand: brand,
+        model: model,
+        description: description,
+        price: price,
+        image: image,
+        color: color,
+        size: size,
+        user: user,
+        product: _id
+    })
         .then((productDeal) => {
             res.status(201).json(productDeal)
         })
         .catch(next)
+}
+
+module.exports.buyProduct = (req, res, next) => {
+    const { product, size, user} = req.body.params
+
+    ProductsDeal.find({ product: product, size: size }).limit(1)
+        .then((sneaker) => {
+            return stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                line_items: [
+                    {
+                        amount: sneaker[0].price * 100,
+                        currency: 'EUR',
+                        name: sneaker[0].model,
+                        quantity: 1,
+                    }
+                ],
+                customer_email: user.email,
+                mode: 'payment',
+                success_url: `http://localhost:3000/successful-pay?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `http://localhost:3000/sneaker-buy/${product}`,
+            })
+                .then(session => {
+                    console.log(session)
+                    res.json({
+                        sessionId: session.id,
+                    });
+                })
+        })
+        .catch((e) => console.log(e))
 }

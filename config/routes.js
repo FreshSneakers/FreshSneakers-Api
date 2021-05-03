@@ -14,9 +14,11 @@ router.post('/login', UsersController.login)
 
 //Products routes
 router.get('/buy', ProductsController.getBuy)
+router.post('/buy/sneaker', authMiddleware.isAuthenticated, ProductsController.buyProduct)
 router.get('/sneaker-buy/:id', ProductsController.buyDetail)
+
 router.get('/sell', ProductsController.filterProduct)
-router.post('/sell/sneaker', ProductsController.sellProduct)
+router.post('/sell/sneaker', authMiddleware.isAuthenticated, ProductsController.sellProduct)
 router.get('/sneaker-sell/:id', ProductsController.sellDetail)
 
 //Contact US
