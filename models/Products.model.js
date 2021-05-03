@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ProductsDeal = require("./Product-deal");
 
 const productSchema = mongoose.Schema({
     brand: {
@@ -34,6 +35,12 @@ const productSchema = mongoose.Schema({
     color: {
       type: String,
     },
+  })
+
+  productSchema.virtual('ProductDeal', {
+    ref: ProductsDeal.modelName,
+    localField:'_id',
+    foreignField: 'product'
   })
 
 const Products = mongoose.model("Products", productSchema);

@@ -13,7 +13,6 @@ const userSchema = mongoose.Schema(
       trim: true,
     },
     email: {
-      unique: true,
       type: String,
       require: "Email is required",
       match: [EMAIL_PATTERN, "Email is not valid"],
@@ -71,7 +70,8 @@ const userSchema = mongoose.Schema(
       transform: (doc, ret) => {
         ret.id = doc._id;
         delete ret._id;
-        delete ret.__v;
+        delete ret.__v
+        delete ret.password;
         return ret;
       },
     },
