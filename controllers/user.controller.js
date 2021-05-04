@@ -4,6 +4,8 @@ const User = require("../models/User.model");
 const { sendActivationEmail } = require("../config/mailer.config");
 
 
+
+
 module.exports.getUser = (req, res, next) => {
   User.find({}).then((users) => res.json(users));
 };

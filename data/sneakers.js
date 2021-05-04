@@ -249,6 +249,61 @@ const sneakers= [
         color:'black/black-black'
 
     },
+    {
+        brand:'New Balance',
+        model:'ML999 ELITE EDITION',
+        description:'If you thought patent leather was reserved only for the Air Jordan 11, you havent met the Air Jordan 1 Retro Black Gold Patent from 2013. With a completely patent leather upper.',
+        price:5000,
+        image:'https://cdn.flightclub.com/1500/TEMPLATE/300439/1.jpg',
+        color:'grey/red-wht'
+
+    },
+    {
+        brand:'New Balance',
+        model:'BODEGA X 997S NO DAYS OFF',
+        description:'If you thought patent leather was reserved only for the Air Jordan 11, you havent met the Air Jordan 1 Retro Black Gold Patent from 2013. With a completely patent leather upper.',
+        price:2000,
+        image:'https://cdn.flightclub.com/1500/TEMPLATE/139337/1.jpg',
+        color:'grey/purple'
+
+    },
+    {
+        brand:'New Balance',
+        model:'CASABLANCA X 327',
+        description:'If you thought patent leather was reserved only for the Air Jordan 11, you havent met the Air Jordan 1 Retro Black Gold Patent from 2013. With a completely patent leather upper.',
+        price:2000,
+        image:'https://cdn.flightclub.com/1500/TEMPLATE/179284/1.jpg',
+        color:'ms327cbb | 4/4/20'
+
+    },
+    {
+        brand:'New Balance',
+        model:'SOLEBOX X 1500 TOOTHPASTE ORANGE',
+        description:'If you thought patent leather was reserved only for the Air Jordan 11, you havent met the Air Jordan 1 Retro Black Gold Patent from 2013. With a completely patent leather upper.',
+        price:14000,
+        image:'https://cdn.flightclub.com/1500/TEMPLATE/300113/1.jpg',
+        color:'white/orange'
+
+    },
+    {
+        brand:'Vans',
+        model:'sddfsfdsfd',
+        description:'If you thought patent leather was reserved only for the Air Jordan 11, you havent met the Air Jordan 1 Retro Black Gold Patent from 2013. With a completely patent leather upper.',
+        price:3,
+        image:'https://cdn.flightclub.com/750/TEMPLATE/260861/1.jpg',
+        color:'black'
+
+    },
+    {
+        brand:'New Balance',
+        model:'SOLEBOX X 1500 TOOTHPASTE ORANGE',
+        description:'If you thought patent leather was reserved only for the Air Jordan 11, you havent met the Air Jordan 1 Retro Black Gold Patent from 2013. With a completely patent leather upper.',
+        price:14000,
+        image:'https://cdn.flightclub.com/1500/TEMPLATE/300113/1.jpg',
+        color:'white/orange'
+
+    },
+    
   
    
   
