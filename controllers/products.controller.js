@@ -88,35 +88,64 @@ module.exports.sellProduct = (req, res, next) => {
 
 module.exports.buyProduct = (req, res, next) => {
   const { product, size, user } = req.body.params;
-
-  ProductsDeal.find({ product: product, size: size })
-    .limit(1)
-    .then((sneaker) => {
-      return stripe.checkout.sessions
-        .create({
-          payment_method_types: ["card"],
-          line_items: [
-            {
-              amount: sneaker[0].price * 100,
-              currency: "EUR",
-              name: sneaker[0].model,
-              quantity: 1,
-            },
-          ],
-          customer_email: user.email,
-          mode: "payment",
-          success_url: `http://localhost:3000/successful-pay?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `http://localhost:3000/sneaker-buy/${product}`,
+    ProductsDeal.find({ product: product, size: size }).limit(1)
+        .then((sneaker) => {
+            console.log(sneaker[0]._id)
+            return stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                line_items: [
+                    {
+                        amount: sneaker[0].price * 100,
+                        currency: 'EUR',
+                        name: sneaker[0].model,
+                        quantity: 1,
+                    }
+                ],
+                customer_email: user.email,
+                mode: 'payment',
+                success_url: `http://localhost:3000/successful-pay?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `http://localhost:3000/sneaker-buy/${product}`,
+                metadata: {
+                    product: sneaker[0]._id.toString()
+                }
+                
+            })
+                .then(session => {
+                    console.log(session)
+                    res.json({
+                        sessionId: session.id,
+                    });
+                })
         })
-        .then((session) => {
-          console.log(session);
-          res.json({
-            sessionId: session.id,
-          });
-        });
-    })
-    .catch((e) => console.log(e));
-};
+        .catch((e) => console.log(e))
+}
+
+module.exports.webhook = (req, res, next) => {
+    const sig = req.headers['stripe-signature'];
+
+    let event;
+
+    try {
+        event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_SIGNING_SECRET);
+    } catch (err) {
+        console.error(err)
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
+        // Fulfill the purchase...
+        ProductsDeal.findByIdAndUpdate(session.metadata.product, { status: false }, { new: true })
+            .then(() => {
+                console.log(`Product with id ${session.metadata.product} has been bought`)
+                res.status(200)
+            })
+            .catch(next)
+    } else {
+        res.status(200)
+    }
+}
+
 module.exports.filterProductBuy = (req, res, next) => {
   const { brand, price } = req.query;
 
@@ -134,3 +163,4 @@ module.exports.filterProductBuy = (req, res, next) => {
     })
     .catch(next);
 };
+

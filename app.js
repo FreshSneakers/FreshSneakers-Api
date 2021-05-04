@@ -13,7 +13,13 @@ const app = express();
 
 /* Middlewares */
 
-app.use(express.json());
+app.use((req, res, next) => {
+  if (req.originalUrl === '/api/products/webhook') {
+    next();
+  } else {
+    express.json()(req, res, next);
+  }
+});
 app.use(logger('dev'));
 app.use(cors())
 
