@@ -68,7 +68,7 @@ module.exports.buyDetail = (req, res, next) => {
   let sibd = []
   Products.findById(id)
     .then((product) => {
-      ProductsDeal.find({ product: product.id, status: true })
+      return ProductsDeal.find({ product: product.id, status: true })
         .then((productDeal) => {
           for (i = 0; i < productDeal.length; i++) {
             sizes.push(productDeal[i].size)
@@ -76,9 +76,10 @@ module.exports.buyDetail = (req, res, next) => {
         })
         .then(() => {
           sibd = [...new Set(sizes)];
-          Products.findByIdAndUpdate(id, { sizes: sibd }, { new: true })
+          console.log(id)
+         return Products.findByIdAndUpdate(id, { sizes: sibd }, { new: true })
+            .then(() => res.json(product))
         })
-        res.json(product)
     })
     .catch(next);
 };
