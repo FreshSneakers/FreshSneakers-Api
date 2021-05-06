@@ -18,9 +18,7 @@ const contactScheme = new mongoose.Schema({
         
     },
     incidences:{
-        enum: []
-        
-        
+        enum: ['incidence1','incidence2','incidence3']
     }
 })
 
