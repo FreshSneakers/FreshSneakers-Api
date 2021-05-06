@@ -16,7 +16,7 @@ router.post('/login', UsersController.login)
 router.get('/buy', ProductsController.getBuy)
 router.post('/buy/sneaker', authMiddleware.isAuthenticated, ProductsController.buyProduct)
 router.get('/sneaker-buy/:id', ProductsController.buyDetail)
-
+router.get('/filter-size', ProductsController.filterSize)
 router.get('/sell', ProductsController.filterProduct)
 router.post('/sell/sneaker', authMiddleware.isAuthenticated, ProductsController.sellProduct)
 router.get('/sneaker-sell/:id', ProductsController.sellDetail)

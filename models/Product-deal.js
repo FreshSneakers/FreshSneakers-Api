@@ -53,6 +53,10 @@ const productsDeal = mongoose.Schema({
         required: 'A user needs to be referenced',
         ref: 'User'
     },
+    bought_by:{
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
+    },
     product: {
         type: mongoose.Types.ObjectId,
         required: 'A Product needs to be referenced',
