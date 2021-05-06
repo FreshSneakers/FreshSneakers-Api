@@ -22,7 +22,7 @@ router.post('/sell/sneaker', authMiddleware.isAuthenticated, ProductsController.
 router.get('/sneaker-sell/:id', ProductsController.sellDetail)
 router.post('/products/webhook', express.raw({ type: 'application/json' }), ProductsController.webhook)
 //Contact US
-router.post('/contact', ContactController.doContact)
+router.post('/contact',authMiddleware.isAuthenticated, ContactController.doContact)
 
 
 //Profile
