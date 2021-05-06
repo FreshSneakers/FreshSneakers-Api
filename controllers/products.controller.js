@@ -74,11 +74,11 @@ module.exports.buyDetail = (req, res, next) => {
             sizes.push(productDeal[i].size)
           }
         })
-      res.json(product)
-      return then(() => {
-        sibd = [...new Set(sizes)];
-        Products.findByIdAndUpdate(id, { sizes: sibd }, { new: true })
-      })
+        .then(() => {
+          sibd = [...new Set(sizes)];
+          Products.findByIdAndUpdate(id, { sizes: sibd }, { new: true })
+        })
+        res.json(product)
     })
     .catch(next);
 };
@@ -183,6 +183,7 @@ module.exports.buyProduct = (req, res, next) => {
 }
 
 module.exports.webhook = (req, res, next) => {
+  console.log('webhook')
   const sig = req.headers['stripe-signature'];
   let event;
 
