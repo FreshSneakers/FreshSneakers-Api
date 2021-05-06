@@ -9,10 +9,19 @@ const contactScheme = new mongoose.Schema({
         type:String,
         require:true
     },
+    phone:{
+        type:String,
+        require:true
+    },
     message:{
         type: String,
-        require: true
+        
     },
+    incidences:{
+        enum: []
+        
+        
+    }
 })
 
 

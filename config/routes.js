@@ -22,7 +22,7 @@ router.post('/sell/sneaker', authMiddleware.isAuthenticated, ProductsController.
 router.get('/sneaker-sell/:id', ProductsController.sellDetail)
 
 //Contact US
-router.post('/contact', ContactController.doContact)
+router.post('/contact',authMiddleware.isAuthenticated, ContactController.doContact)
 
 
 //Profile
