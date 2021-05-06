@@ -35,6 +35,7 @@ const productSchema = mongoose.Schema({
     color: {
       type: String,
     },
+    sizes : []
   })
 
   productSchema.virtual('ProductDeal', {
