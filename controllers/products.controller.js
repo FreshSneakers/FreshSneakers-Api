@@ -165,8 +165,8 @@ module.exports.buyProduct = (req, res, next) => {
         ],
         customer_email: user.email,
         mode: 'payment',
-        success_url: `${process.env.CORS_ORIGIN || `http://localhost:${3000}`}/successful-pay?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.CORS_ORIGIN || `http://localhost:${3000}`}/${product}`,
+        success_url: `${process.env.CORS_ORIGIN || `http://localhost:${3000}/api`}/successful-pay?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.CORS_ORIGIN || `http://localhost:${3000}/api`}/sneaker-buy/${product}`,
         metadata: {
           product: sneaker[0]._id.toString(),
           bought_by_id: user.id
