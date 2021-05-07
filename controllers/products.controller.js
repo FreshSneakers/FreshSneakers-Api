@@ -76,9 +76,8 @@ module.exports.buyDetail = (req, res, next) => {
         })
         .then(() => {
           sibd = [...new Set(sizes)];
-          console.log(id)
          return Products.findByIdAndUpdate(id, { sizes: sibd }, { new: true })
-            .then(() => res.json(product))
+         .then(() => res.json(product))
         })
     })
     .catch(next);

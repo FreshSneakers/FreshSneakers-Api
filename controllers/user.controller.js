@@ -3,9 +3,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 const { sendActivationEmail } = require("../config/mailer.config");
 
-
-
-
 module.exports.getUser = (req, res, next) => {
   User.find({}).then((users) => res.json(users));
 };
@@ -78,12 +75,14 @@ module.exports.get = (req, res, next) => {
 };
 
 module.exports.activate = (req, res, next) => {
+  console.log('entra en el activate')
   User.findOneAndUpdate(
     { activationToken: req.params.token, active: false },
     { active: true, activationToken: "active" }
   )
     .then((u) => {
       res.status(201).json(u);
+      console.log(u)
     })
     .catch((e) => next(e));
 };
