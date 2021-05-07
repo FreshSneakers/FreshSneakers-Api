@@ -19,6 +19,7 @@ app.use((req, res, next) => {
   } else {
     express.json()(req, res, next);
   }
+  res.setHeader('Access-Control-Allow-Origin', '*');
 });
 app.use(logger('dev'));
 app.use(cors)
