@@ -76,11 +76,13 @@ module.exports.get = (req, res, next) => {
 };
 
 module.exports.activate = (req, res, next) => {
-  console.log(req.params,token)
-  User.findByIdAndUpdate({token:req.params.token, active: true})
+  User.findOneAndUpdate(
+    { activationToken: req.params.token, active: false },
+    { active: true, activationToken: 'active' }
+  )
     .then((u) => {
       res.status(201).json(u);
-      console.log('jsonn', u)
+      console.log('RESPUESTA DEL JSON', u)
     })
     .catch((e) => next(e));
 };
