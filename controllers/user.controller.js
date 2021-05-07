@@ -80,7 +80,7 @@ module.exports.activate = (req, res, next) => {
   const {token} = req.params
   User.find({ activationToken:token})
     .then((user) => {
-      findByIdAndUpdate(user._id, {active:true})
+      User.findByIdAndUpdate(user._id, {active:true})
         .then((res) => res.status(201).json)
     })
     .catch((e) => next(e));
