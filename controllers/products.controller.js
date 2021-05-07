@@ -174,7 +174,6 @@ module.exports.buyProduct = (req, res, next) => {
 
       })
         .then(session => {
-          console.log(session)
           res.json({
             sessionId: session.id,
           });
@@ -195,7 +194,6 @@ module.exports.webhook = (req, res, next) => {
   }
 
   if (event.type === 'checkout.session.completed') {
-    console.log('Session completada');
     const session = event.data.object;
 
     // Fulfill the purchase...
