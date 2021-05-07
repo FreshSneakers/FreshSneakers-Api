@@ -2,6 +2,7 @@ const createError = require("http-errors");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 const { sendActivationEmail } = require("../config/mailer.config");
+const { token } = require("morgan");
 
 module.exports.getUser = (req, res, next) => {
   User.find({}).then((users) => res.json(users));
@@ -75,14 +76,11 @@ module.exports.get = (req, res, next) => {
 };
 
 module.exports.activate = (req, res, next) => {
-  console.log('entra en el activate')
-  User.findOneAndUpdate(
-    { activationToken: req.params.token, active: false },
-    { active: true, activationToken: "active" }
-  )
+  console.log(req.params,token)
+  User.findByIdAndUpdate({token:req.params.token, active: true})
     .then((u) => {
       res.status(201).json(u);
-      console.log(u)
+      console.log('jsonn', u)
     })
     .catch((e) => next(e));
 };
