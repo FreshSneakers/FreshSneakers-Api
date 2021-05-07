@@ -2,8 +2,7 @@ require('dotenv').config();
 
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken')
-//const cors = require('./config/cors.config')
-const cors = require('cors')
+const cors = require('./config/cors.config')
 const createError = require('http-errors');
 const logger = require('morgan');
 const express = require('express');
@@ -22,7 +21,7 @@ app.use((req, res, next) => {
   }
 });
 app.use(logger('dev'));
-app.use(cors())
+app.use(cors)
 
 /* Routes */
 
