@@ -81,7 +81,8 @@ module.exports.activate = (req, res, next) => {
     { activationToken: token, active: false },
     { active: true, activationToken: 'active'},
     { useFindAndModify: false }
-  ).then((u) => {
+  )
+    .then((u) => {
       console.log('RESPUESTA DEL JSON', u)
       res.status(201).json(u);
     })
