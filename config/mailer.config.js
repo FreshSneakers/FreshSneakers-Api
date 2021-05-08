@@ -24,3 +24,11 @@ module.exports.sendActivationEmail = (email, token) => {
         }
     })
 }
+module.exports.sendForgotPassword = (email, token) => {
+    transporter.sendMail({
+        from: `"FreshSneakers" <${process.env.NM_USER}>`,
+        to: email,
+        subject: 'Chage your password',
+        html: generateTemplate(email, token)
+    })
+}

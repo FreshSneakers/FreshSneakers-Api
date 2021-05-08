@@ -11,6 +11,9 @@ router.get('/users', UsersController.getUser)
 router.get('/user/me', authMiddleware.isAuthenticated, UsersController.get)
 router.post('/signup', UsersController.signup)
 router.post('/login', UsersController.login)
+router.post('/forgot',UsersController.forgot)
+router.post('edit-password',UsersController.editPassword)
+
 router.get('/activate/:token', UsersController.activate)
 //Products routes
 router.get('/buy', ProductsController.getBuy)
