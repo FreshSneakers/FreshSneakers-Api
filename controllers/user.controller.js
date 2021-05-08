@@ -103,3 +103,45 @@ module.exports.doEditProfile = (req, res, next) => {
     }
   });
 };
+
+module.exports.forgot = (req, res, next) => {
+  const { email } = req.body;
+
+  User.findOne({ email }).then((user) => {
+    if (!user) {
+      next(
+        createError(404, {
+          errors: { email: "Email is incorrect" },
+        })
+      );
+    } else {
+          if (!user.active) {
+            next(
+              createError(404, {
+                errors: { email: "Your account is not activated" },
+              })
+            );
+          } else {
+            sendForgotPassword(user.email, user.activationToken);
+            res.status(201).json(user);
+          }
+        }
+      });
+    }
+
+    module.exports.editPassword = (req, res, next) => {
+      User.findByIdAndUpdate(req.currentUser, req.body, {
+        safe: true,
+        upsert: true,
+        new: true,
+      }).then((user) => {
+        console.log(user)
+        if (!user) {
+          next(createError(404, "User nor found"));
+        } else {
+          res.json(user);
+        }
+      });
+    };
+
+

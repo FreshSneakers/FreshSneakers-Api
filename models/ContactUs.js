@@ -15,10 +15,12 @@ const contactScheme = new mongoose.Schema({
     },
     message:{
         type: String,
+        require:true
         
     },
     incidences:{
-        enum: ['incidence1','incidence2','incidence3']
+       type:String,
+       require:true
     }
 })
 
