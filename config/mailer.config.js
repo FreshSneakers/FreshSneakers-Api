@@ -1,5 +1,7 @@
 const nodemailer = require('nodemailer')
 const { generateTemplate } = require('./mailtemplate.js')
+const {generatePassword} = require('./mailTmplatePassword')
+
 
 const transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -29,6 +31,6 @@ module.exports.sendForgotPassword = (email, token) => {
         from: `"FreshSneakers" <${process.env.NM_USER}>`,
         to: email,
         subject: 'Chage your password',
-        html: generateTemplate(email, token)
+        html: generatePassword(email, token)
     })
 }

@@ -1,8 +1,11 @@
 const createError = require("http-errors");
+const mongoose = require('mongoose');
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
-const { sendActivationEmail } = require("../config/mailer.config");
+const { sendActivationEmail,sendForgotPassword} = require("../config/mailer.config");
 const { token } = require("morgan");
+const bcryptjs = require("bcrypt");
+const saltRounds = 10;
 
 module.exports.getUser = (req, res, next) => {
   User.find({}).then((users) => res.json(users));
@@ -76,14 +79,14 @@ module.exports.get = (req, res, next) => {
 };
 
 module.exports.activate = (req, res, next) => {
-  const { token } = req.params
+  const { token } = req.params;
   User.findOneAndUpdate(
     { activationToken: token, active: false },
-    { active: true, activationToken: 'active'},
+    { active: true, activationToken: "active" },
     { useFindAndModify: false }
   )
     .then((u) => {
-      console.log('RESPUESTA DEL JSON', u)
+      console.log("RESPUESTA DEL JSON", u);
       res.status(201).json(u);
     })
     .catch((e) => next(e));
@@ -95,7 +98,7 @@ module.exports.doEditProfile = (req, res, next) => {
     upsert: true,
     new: true,
   }).then((user) => {
-    console.log(user)
+    console.log(user);
     if (!user) {
       next(createError(404, "User nor found"));
     } else {
@@ -115,33 +118,35 @@ module.exports.forgot = (req, res, next) => {
         })
       );
     } else {
-          if (!user.active) {
-            next(
-              createError(404, {
-                errors: { email: "Your account is not activated" },
-              })
-            );
-          } else {
-            sendForgotPassword(user.email, user.activationToken);
-            res.status(201).json(user);
-          }
-        }
-      });
+      if (!user.active) {
+        next(
+          createError(404, {
+            errors: { email: "Your account is not activated" },
+          })
+        );
+      } else {
+        sendForgotPassword(user.email, user.activationToken);
+        console.log(user);
+        res.status(201).json(user);
+      }
     }
+  });
+};
 
-    module.exports.editPassword = (req, res, next) => {
-      User.findByIdAndUpdate(req.currentUser, req.body, {
+module.exports.editPassword = (req, res, next) => {
+  const {password} = req.body
+  bcryptjs
+    .genSalt(saltRounds)
+    .then((salt) => bcryptjs.hash(password, salt))
+    .then((hashedPassword) => {
+      User.findByIdAndUpdate(hashedPassword, {
         safe: true,
         upsert: true,
         new: true,
-      }).then((user) => {
-        console.log(user)
-        if (!user) {
-          next(createError(404, "User nor found"));
-        } else {
-          res.json(user);
-        }
+      })
+      .then((u) => {
+        res.json(user);
       });
-    };
-
-
+    })
+    
+};
