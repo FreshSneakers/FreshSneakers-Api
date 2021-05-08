@@ -76,9 +76,8 @@ module.exports.buyDetail = (req, res, next) => {
         })
         .then(() => {
           sibd = [...new Set(sizes)];
-          console.log(id)
          return Products.findByIdAndUpdate(id, { sizes: sibd }, { new: true })
-            .then(() => res.json(product))
+         .then(() => res.json(product))
         })
     })
     .catch(next);
@@ -165,8 +164,8 @@ module.exports.buyProduct = (req, res, next) => {
         ],
         customer_email: user.email,
         mode: 'payment',
-        success_url: `http://localhost:3000/successful-pay?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `http://localhost:3000/sneaker-buy/${product}`,
+        success_url: `${process.env.CORS_ORIGIN || `http://localhost:${3000}/api`}/successful-pay?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.CORS_ORIGIN || `http://localhost:${3000}/api`}/sneaker-buy/${product}`,
         metadata: {
           product: sneaker[0]._id.toString(),
           bought_by_id: user.id
@@ -174,7 +173,6 @@ module.exports.buyProduct = (req, res, next) => {
 
       })
         .then(session => {
-          console.log(session)
           res.json({
             sessionId: session.id,
           });

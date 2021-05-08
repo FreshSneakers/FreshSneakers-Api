@@ -15,5 +15,12 @@ module.exports.sendActivationEmail = (email, token) => {
         to: email,
         subject: 'Thanks for joining us!',
         html: generateTemplate(email, token)
+    }, (err, info) =>  {
+        if(err){
+            console.log('error mail');
+            console.log(process.env.NM_USER)
+            console.log(process.env.NM_PASSWORD);
+            console.log(err);
+        }
     })
 }
