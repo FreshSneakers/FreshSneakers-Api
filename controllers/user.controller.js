@@ -76,12 +76,12 @@ module.exports.get = (req, res, next) => {
 };
 
 module.exports.activate = (req, res, next) => {
-  console.log('entra en el activate account')
+  const { token } = req.params
   User.findOneAndUpdate(
-    { activationToken: req.params.token, active: false },
-    { active: true, activationToken: 'active' }
-  )
-    .then((u) => {
+    { activationToken: token, active: false },
+    { active: true, activationToken: 'active'},
+    { useFindAndModify: false }
+  ).then((u) => {
       console.log('RESPUESTA DEL JSON', u)
       res.status(201).json(u);
     })
