@@ -27,19 +27,19 @@ module.exports.getOrder = (req, res, next) => {
     const { id } = req.params
     ProductsDeal.findById(id)
         .then((order) => {
+            const path = `../../../../Downloads/Order.pdf`
             const doc = new PDFDocument();
-            doc.pipe(fs.createWriteStream(`${__dirname}/Order.pdf`));
-
+            doc.pipe(fs.createWriteStream(path));
             doc.fontSize(14)
                 .text(`Order Number: ${order._id}`)
             doc.fontSize(16)
                 .text(`Model: ${order.model}`, 100, 100);
             doc.fontSize(16)
-                .text(`Price: ${order.price} €`, 100, 120);
+                .text(`Price: ${order.price} €`, 100, 130);
             doc.fontSize(16)
-                .text(`Size: ${order.size}`, 100, 140);
+                .text(`Size: ${order.size}`, 100, 150);
             doc.fontSize(16)
-                .text(`Address: Paseo de la chopera 14`, 100, 160);
+                .text(`Address: Paseo de la chopera 14`, 100, 170);
             doc.image('qr.png', {
                 fit: [250, 300],
                 align: 'center',
