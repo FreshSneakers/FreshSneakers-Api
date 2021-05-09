@@ -29,6 +29,7 @@ router.post('/contact', authMiddleware.isAuthenticated, ContactController.doCont
 //Orders
 router.get('/orders-buy', authMiddleware.isAuthenticated, OrdersController.getOrdersBuy)
 router.get('/orders-sell', authMiddleware.isAuthenticated, OrdersController.getOrderSell)
+router.get('/order/:id', OrdersController.getOrder)
 //Profile
 router.post('/profile', authMiddleware.isAuthenticated, UsersController.doEditProfile)
 
