@@ -23,12 +23,12 @@ module.exports.getOrderSell = (req, res, next) => {
 }
 
 module.exports.getOrder = (req, res, next) => {
-
+    res.setHeader('Content-type', 'application/pdf');
     const { id } = req.params
     ProductsDeal.findById(id)
         .then((order) => {
             const doc = new PDFDocument();
-            doc.pipe(fs.createWriteStream('../../../../Downloads/Order.pdf'));
+            doc.pipe(fs.createWriteStream(`${__dirname}/Order.pdf`));
 
             doc.fontSize(14)
                 .text(`Order Number: ${order._id}`)
@@ -45,7 +45,6 @@ module.exports.getOrder = (req, res, next) => {
                 align: 'center',
                 valign: 'center'
             });
-
             doc.end()
         })
 }
