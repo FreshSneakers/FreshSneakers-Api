@@ -68,6 +68,8 @@ module.exports.buyDetail = (req, res, next) => {
   let sibd = []
   Products.findById(id)
     .then((product) => {
+         Products.deleteOne({size})
+        .then((res) => console.log(res))
       return ProductsDeal.find({ product: product.id, status: true })
         .then((productDeal) => {
           for (i = 0; i < productDeal.length; i++) {
@@ -227,4 +229,3 @@ module.exports.filterProductBuy = (req, res, next) => {
     })
     .catch(next);
 };
-
